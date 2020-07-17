@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>DianCore</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+     <script src='Diancore.min.js'></script>
+
+
+
+     <style>
+
+       #idbotones{
+
+         position: absolute;
+         top: 0%;
+         left: 0%;
+         width: 100%;
+         height: 100%;
+         background-color: rgb(0, 0, 0);
+         display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	align-items: stretch;
+	align-content: stretch;
+         z-index: 128;
+overflow: scroll;
+       }
+
+      .climgdos{
+
+        
+         width: 100px;
+         height: 100px;  
+      } 
+
+
+    #idbtfuer{
+
+      position: absolute;
+     bottom:  0%;
+         left: 0%;
+         width: 50px;
+         height: 50px;
+         border-radius: 50%;
+         background-color: blue;
+         z-index: 123;
+    }
+  #idfondo{
+
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+  }
+
+#idcajaimg{
+
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  width: 40%;
+  height: 50%;
+}
+
+#resultados{
+  position: absolute;
+  top: 5%;
+  left: 0%;
+  width: 300px;
+  height: 500px;
+
+
+
+}
+#estatus{
+  position: absolute;
+    left: 50%;
+    top: 75%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+}
+
+#idinput{
+  position: absolute;
+    left: 50%;
+    top: 90%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    background-color: blue;
+z-index: 322;
+}
+
+#imageele{
+
+  position: absolute;
+  top: 5%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+}
+
+     </style>
+  </head>
+  <body>
+<button id="idbtfuer" onclick="window.location.reload(true);" id="idotro">seleccionar</button>
+<div id="idocul"></div>
+    <div id="idbotones">
+
+      <img onclick="f1(this);" class="climgdos" src="ccd.jpg" alt="">
+      <img onclick="f1(this);" class="climgdos" src="Pasaporte3.jpg" alt="">
+      <img onclick="f1(this);" class="climgdos" src="nuevo1.jpg" alt="">
+      <img onclick="f1(this);" class="climgdos" src="nuevo2.jpg" alt="">
+      <img onclick="f1(this);" class="climgdos" src="mexico.jpg" alt="">
+      
+
+
+    </div>
+    <div id="idfondo">
+
+      <div id="idcajaimg">   <img id="imageele" src="" ></div>
+    </div>
+
+    <div id="estatus"> </div>
+  
+
+      <div id="resultados"> </div>
+
+
+      <input id="idinput" type="file" onchange="cargarimagenes(event)">
+      
+      <canvas id="canvasele" style="display:none;"></canvas>
+      
+      <script>
+        
+        
+          const img = document.getElementById('imageele');
+          const canvas = document.createElement('canvas');
+     
+          
+        
+        
+          
+          function gotStream(stream) {
+            window.stream = stream; 
+            video.srcObject = stream;
+          }
+
+          function Unerror(error) {
+            console.log(error);
+          }
+
+
+          
+
+          function Iniciar(url) {
+            
+            const worker = new DianCore.DianCoreWorker();
+            worker.recognize(url)
+                .then(function(result) {
+                    document.getElementById("resultados")
+                            .innerText = result.text;
+                }).progress(function(result) {
+                    document.getElementById("estatus")
+                            .innerText = parseInt((result["progress"] * 100))+ "%";
+                });
+          }         
+
+//Dian
+
+
+          function f1(thiss){
+var uno=thiss.src;
+
+document.getElementById("idbotones").style.display="none";
+document.getElementById("imageele").src=uno;
+
+ 
+
+         
+         document.getElementById("resultados").innerText = "";
+    
+         
+           Iniciar(uno);
+}
+
+function cargarimagenes(event) {
+  var selectedFile = event.target.files[0];
+  var reader = new FileReader();
+
+
+  
+
+  reader.onload = function(event) {
+    img.src = event.target.result;
+      
+document.getElementById("idbotones").style.display="none";
+
+
+document.getElementById("resultados").innerText = "";
+
+
+Iniciar(img.src);
+  };
+
+  reader.readAsDataURL(selectedFile);
+
+}
+
+      </script>
+  </body>
+</html>
